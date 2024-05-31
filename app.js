@@ -7,11 +7,12 @@ const cors = require("cors");
 const path = require('path');
 const MysqlStore = mysqlSession(session);
 const sessionStore = new MysqlStore({}, db);
+
+const dotenv = require('dotenv');
 const jsonTable =require("./routes")
 const app = express(); 
 app.set('view engine', 'ejs');
 app.use(express.json());
- 
 app.use(express.urlencoded({extended:true}));
  
 const corsOptions={
@@ -112,6 +113,9 @@ app.use("/jquery", express.static("node_modules/jquery/dist"));
 app.use((req, res) => {
   res.status(404).send(`<h2>404 走錯路了</h2>`);
 });
+dotenv.config({ path: './dev.env' }); // Specify the path to your .env file
+
+// Access environment variables 
 const port = process.env.WEB_PORT || 3002;
 app.listen(port, () => {
   console.log(`伺服器啟動 使用通訊埠 http://127.0.0.1:${port}`);
